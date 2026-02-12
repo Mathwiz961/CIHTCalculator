@@ -214,6 +214,18 @@
       font-size:11px;
       color:var(--muted);
     }
+    .erauBadge{
+  display:inline-block;
+  padding:3px 10px;
+  border-radius:999px;
+  background:rgba(255,199,44,.85);
+  color:#08324f;           /* dark navy text */
+  font-size:11px;
+  font-weight:800;
+  border:1px solid rgba(0,0,0,.18);
+  line-height:1.4;
+}
+
   </style>
 </head>
 
@@ -223,10 +235,14 @@
   <div class="banner">
     <div class="bannerInner">
       <div class="accentPill" aria-hidden="true"></div>
-      <div class="bannerText">
-        <div class="h">CI / Hypothesis Test Calculator</div>
-        <div class="sub">Means (z/t) • Two Means (Welch t / z) • Matched Pairs (t) • Proportions (z) • Outputs: critical values, df, SE formulas, p-values</div>
-      </div>
+<div class="bannerText">
+  <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+    <div class="h">CI / Hypothesis Test Calculator</div>
+    <span class="erauBadge">Embry-Riddle Aeronautical University</span>
+  </div>
+  <div class="sub">Means (z/t) • Two Means (Welch t / z) • Matched Pairs (t) • Proportions (z) • Outputs: critical values, df, SE formulas, p-values</div>
+</div>
+
     </div>
   </div>
 
