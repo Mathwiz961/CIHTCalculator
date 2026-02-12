@@ -716,6 +716,7 @@ function runCI(type, alpha){
     o.push(`Mode: Confidence Interval`);
     o.push(`Procedure: One Mean`);
     o.push(`Confidence level (CL): ${fmt(CL,6)}   (α=${fmt(alpha,6)})`);
+    o.push(`CL ↔ α: ${fmt(CL,6)} ↔ ${fmt(alpha,6)}`);
     o.push(`Distribution used: ${dist}`);
     o.push(`SE formula: ${sigmaKnown ? "SE = σ/√n" : "SE = s/√n"}`);
     o.push(`SE = ${fmt(se)}`);
@@ -873,6 +874,8 @@ function runHT(type, alpha, alt){
     o.push(`Mode: Hypothesis Test`);
     o.push(`Procedure: One Mean`);
     o.push(`α = ${fmt(alpha,6)}   Alternative: ${alt==='two'?'≠':(alt==='lt'?'<':'>')}`);
+    const CL = 1 - alpha;
+    o.push(`CL ↔ α: ${fmt(CL,6)} ↔ ${fmt(alpha,6)}`);
     o.push(`Distribution used: ${dist}`);
     o.push(`SE formula: ${sigmaKnown ? "SE = σ/√n" : "SE = s/√n"}`);
     o.push(`SE = ${fmt(se)}`);
