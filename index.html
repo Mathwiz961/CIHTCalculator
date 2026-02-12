@@ -14,100 +14,63 @@
       /* UI */
       --page:#ffffff;
       --panel:#f5f6f8;
-      --card:#ffffff;
       --text:#0b1220;
       --muted:#5b6776;
-      --line:rgba(10, 25, 41, .14);
 
       --btn:#0b5ea8;
       --btnHover:#0a4f8c;
 
       --radius:14px;
-      --shadow:0 10px 24px rgba(0,0,0,.10);
       --shadowSoft:0 8px 18px rgba(0,0,0,.08);
-
       --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
       --sans: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     }
 
     *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family:var(--sans);
-      color:var(--text);
-      background:var(--page);
-    }
+    body{ margin:0; font-family:var(--sans); color:var(--text); background:var(--page); }
 
-    /* Title (like your page title above the banner) */
     .pageTitle{
-      max-width:1200px;
-      margin:18px auto 8px;
-      padding:0 18px;
-      font-size:34px;
-      font-weight:300;
-      color:#6b7280;
-      letter-spacing:.2px;
+      max-width:1200px; margin:18px auto 8px; padding:0 18px;
+      font-size:34px; font-weight:300; color:#6b7280; letter-spacing:.2px;
     }
 
-    /* Banner (match screenshot) */
     .banner{
       background:linear-gradient(180deg, #0b5a99 0%, #003A63 55%, #002B4A 100%);
       border-bottom:3px solid var(--gold);
       padding:14px 0;
     }
     .bannerInner{
-      max-width:1200px;
-      margin:0 auto;
-      padding:0 18px;
-      display:flex;
-      align-items:center;
-      justify-content:center; /* centered like screenshot */
-      gap:14px;
+      max-width:1200px; margin:0 auto; padding:0 18px;
+      display:flex; align-items:center; justify-content:center; gap:14px;
     }
     .accentPill{
-      width:10px;
-      height:34px;
-      border-radius:10px;
-      background:var(--gold);
+      width:10px; height:34px; border-radius:10px; background:var(--gold);
       box-shadow:0 4px 14px rgba(255,199,44,.35);
       border:1px solid rgba(0,0,0,.08);
     }
-    .bannerText{
-      display:flex;
-      flex-direction:column;
-      gap:2px;
-      min-width:260px;
-    }
-    .bannerText .h{
-      color:#fff;
-      font-weight:700;
-      font-size:16px;
-      line-height:1.1;
-    }
-    .bannerText .sub{
-      color:rgba(255,255,255,.88);
-      font-size:12px;
-      line-height:1.2;
+    .bannerText{ display:flex; flex-direction:column; gap:2px; }
+    .bannerText .h{ color:#fff; font-weight:700; font-size:16px; line-height:1.1; }
+    .bannerText .sub{ color:rgba(255,255,255,.88); font-size:12px; line-height:1.2; }
+
+    .erauBadge{
+      display:inline-block;
+      padding:3px 10px;
+      border-radius:999px;
+      background:rgba(255,199,44,.88);
+      color:#08324f;
+      font-size:11px;
+      font-weight:800;
+      border:1px solid rgba(0,0,0,.18);
+      line-height:1.4;
+      white-space:nowrap;
     }
 
-    /* Layout like screenshot: two panels centered with gap */
-    .wrap{
-      max-width:1200px;
-      margin:26px auto 40px;
-      padding:0 18px;
-    }
+    .wrap{ max-width:1200px; margin:26px auto 40px; padding:0 18px; }
     .grid{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:18px;
-      justify-content:center;
-      align-items:start;
-      max-width:940px; /* forces centered cards like your image */
-      margin:0 auto;
+      display:grid; grid-template-columns: 1fr 1fr; gap:18px;
+      max-width:940px; margin:0 auto; align-items:start;
     }
-    @media (max-width: 980px){
-      .grid{grid-template-columns:1fr; max-width:620px;}
-    }
+    @media (max-width:980px){ .grid{grid-template-columns:1fr; max-width:620px;} }
 
     .card{
       background:var(--panel);
@@ -116,22 +79,10 @@
       box-shadow:var(--shadowSoft);
       overflow:hidden;
     }
-    .cardInner{
-      padding:14px 16px 16px;
-    }
-    .cardTitle{
-      font-weight:700;
-      font-size:13px;
-      color:#0b1220;
-      margin:0 0 10px 0;
-    }
+    .cardInner{ padding:14px 16px 16px; }
+    .cardTitle{ font-weight:700; font-size:13px; margin:0 0 10px 0; }
 
-    label{
-      display:block;
-      font-size:11px;
-      color:var(--muted);
-      margin:10px 0 6px;
-    }
+    label{ display:block; font-size:11px; color:var(--muted); margin:10px 0 6px; }
     input, select, textarea{
       width:100%;
       padding:10px 10px;
@@ -146,58 +97,31 @@
       border-color: rgba(11,94,168,.55);
       box-shadow: 0 0 0 3px rgba(11,94,168,.14);
     }
-    textarea{min-height:110px; resize:vertical; font-family:var(--mono); font-size:12px;}
-
-    .row2{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
+    input:disabled, select:disabled, textarea:disabled{
+      background:#eef1f5;
+      color:#6b7280;
+      cursor:not-allowed;
     }
-    @media (max-width: 520px){ .row2{grid-template-columns:1fr;} }
+    textarea{ min-height:110px; resize:vertical; font-family:var(--mono); font-size:12px; }
 
-    .btnRow{
-      display:flex;
-      gap:10px;
-      margin-top:12px;
-      flex-wrap:wrap;
-      align-items:center;
-    }
+    .row2{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    @media (max-width:520px){ .row2{grid-template-columns:1fr;} }
+
+    .btnRow{ display:flex; gap:10px; margin-top:12px; flex-wrap:wrap; }
     .btn{
-      border:none;
-      border-radius:999px;
-      padding:9px 14px;
-      font-weight:700;
-      font-size:13px;
-      cursor:pointer;
+      border:none; border-radius:999px; padding:9px 14px;
+      font-weight:700; font-size:13px; cursor:pointer;
     }
-    .btn.primary{
-      background:var(--btn);
-      color:#fff;
-      box-shadow:0 8px 18px rgba(11,94,168,.20);
-    }
+    .btn.primary{ background:var(--btn); color:#fff; box-shadow:0 8px 18px rgba(11,94,168,.20); }
     .btn.primary:hover{ background:var(--btnHover); }
-    .btn.ghost{
-      background:#fff;
-      color:var(--btn);
-      border:1px solid rgba(11,94,168,.35);
-    }
-    .btn.ghost:hover{
-      background:rgba(11,94,168,.06);
-    }
+    .btn.ghost{ background:#fff; color:var(--btn); border:1px solid rgba(11,94,168,.35); }
+    .btn.ghost:hover{ background:rgba(11,94,168,.06); }
 
     .help{
-      margin-top:10px;
-      font-size:11px;
-      color:var(--muted);
-      line-height:1.35;
+      margin-top:10px; font-size:11px; color:var(--muted); line-height:1.35;
     }
 
-    /* Output looks like your "Output" textbox */
-    .outputLabel{
-      margin-top:8px;
-      font-size:11px;
-      color:var(--muted);
-    }
+    .outputLabel{ margin-top:8px; font-size:11px; color:var(--muted); }
     .outputBox{
       margin-top:6px;
       background:#fff;
@@ -207,25 +131,20 @@
       font-family:var(--mono);
       font-size:12px;
       white-space:pre-wrap;
-      min-height:140px;
+      min-height:160px;
     }
-    .tip{
-      margin-top:10px;
-      font-size:11px;
-      color:var(--muted);
-    }
-    .erauBadge{
-  display:inline-block;
-  padding:3px 10px;
-  border-radius:999px;
-  background:rgba(255,199,44,.85);
-  color:#08324f;           /* dark navy text */
-  font-size:11px;
-  font-weight:800;
-  border:1px solid rgba(0,0,0,.18);
-  line-height:1.4;
-}
+    .tip{ margin-top:10px; font-size:11px; color:var(--muted); }
 
+    .toggleRow{
+      display:flex; align-items:center; gap:10px;
+      margin-top:10px; padding:8px 10px;
+      border-radius:10px;
+      background:#ffffff;
+      border:1px solid rgba(0,0,0,.10);
+    }
+    .toggleRow input{ width:auto; margin:0; }
+    .toggleRow span{ font-size:12px; color:var(--text); font-weight:700; }
+    .small{ font-size:11px; color:var(--muted); }
   </style>
 </head>
 
@@ -235,21 +154,20 @@
   <div class="banner">
     <div class="bannerInner">
       <div class="accentPill" aria-hidden="true"></div>
-<div class="bannerText">
-  <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
-    <div class="h">CI / Hypothesis Test Calculator</div>
-    <span class="erauBadge">Embry-Riddle Aeronautical University</span>
-  </div>
-  <div class="sub">Means (z/t) • Two Means (Welch t / z) • Matched Pairs (t) • Proportions (z) • Outputs: critical values, df, SE formulas, p-values</div>
-</div>
-
+      <div class="bannerText">
+        <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+          <div class="h">CI / Hypothesis Test Calculator</div>
+          <span class="erauBadge">Embry-Riddle Aeronautical University</span>
+        </div>
+        <div class="sub">Means (z/t) • Two Means (Welch t / z) • Matched Pairs (t) • Proportions (z) • Outputs: critical values, df, SE formulas, p-values</div>
+      </div>
     </div>
   </div>
 
   <div class="wrap">
     <div class="grid">
 
-      <!-- LEFT: setup -->
+      <!-- LEFT -->
       <section class="card">
         <div class="cardInner">
           <div class="cardTitle">1) Procedure & Parameters</div>
@@ -274,19 +192,33 @@
             </div>
           </div>
 
+          <!-- CL / alpha as two separate inputs -->
           <div class="row2">
             <div>
-              <label for="conf">Confidence Level (CI) / α (Test)</label>
-              <input id="conf" type="number" step="0.001" value="0.95" />
+              <label for="cl">Enter Confidence Level (CL) for CI</label>
+              <input id="cl" type="number" step="0.001" min="0" max="1" value="0.95" />
+              <div class="small">Example: 0.90, 0.95, 0.99</div>
             </div>
-            <div id="altWrap" style="display:none">
-              <label for="alt">Alternative (Hₐ)</label>
-              <select id="alt">
-                <option value="two">Two-sided (≠)</option>
-                <option value="lt">Left-tailed (&lt;)</option>
-                <option value="gt">Right-tailed (&gt;)</option>
-              </select>
+            <div>
+              <label for="alpha">Enter Significance Level (α) for HT</label>
+              <input id="alpha" type="number" step="0.001" min="0" max="1" value="0.05" />
+              <div class="small">Example: 0.10, 0.05, 0.01</div>
             </div>
+          </div>
+
+          <!-- Sync option -->
+          <div class="toggleRow">
+            <input id="sync" type="checkbox" checked />
+            <span>Sync CL and α (α = 1 − CL)</span>
+          </div>
+
+          <div id="altWrap" style="display:none">
+            <label for="alt">Alternative (Hₐ)</label>
+            <select id="alt">
+              <option value="two">Two-sided (≠)</option>
+              <option value="lt">Left-tailed (&lt;)</option>
+              <option value="gt">Right-tailed (&gt;)</option>
+            </select>
           </div>
 
           <div id="formArea"></div>
@@ -298,26 +230,24 @@
           </div>
 
           <div class="help">
-            Default choices follow standard intro stats conventions:
+            Defaults follow standard intro stats conventions:
             <ul style="margin:6px 0 0 18px; padding:0">
               <li>σ known → z; σ unknown → t.</li>
               <li>Two-mean unknown σ uses <b>Welch’s t</b> by default.</li>
-              <li>Two-proportion tests use pooled p̂ for SE.</li>
+              <li>Two-proportion tests use pooled p̂ for SE₀.</li>
             </ul>
           </div>
         </div>
       </section>
 
-      <!-- RIGHT: output -->
+      <!-- RIGHT -->
       <section class="card">
         <div class="cardInner">
           <div class="cardTitle">2) Results</div>
-
           <div class="outputLabel">Output</div>
           <div id="output" class="outputBox">Ready.</div>
-
           <div class="tip">
-            Tip: For raw data input, separate values with spaces/commas/newlines. For paired lists, enter x1 x2 per line.
+            Tip: Raw data can be separated by spaces, commas, or new lines. For paired lists, enter <code>x1 x2</code> per line.
           </div>
         </div>
       </section>
@@ -433,9 +363,13 @@ function tInv(p, df){
 /* =========================
    Stats + UI
    ========================= */
+
 const modeEl=document.getElementById('mode');
 const typeEl=document.getElementById('type');
-const confEl=document.getElementById('conf');
+const clEl=document.getElementById('cl');
+const alphaEl=document.getElementById('alpha');
+const syncEl=document.getElementById('sync');
+
 const altWrap=document.getElementById('altWrap');
 const altEl=document.getElementById('alt');
 const formArea=document.getElementById('formArea');
@@ -462,12 +396,9 @@ function sampleVar(a){
 }
 function sampleSd(a){ return Math.sqrt(sampleVar(a)); }
 
-function zCrit(alpha, twoSided){
-  return twoSided ? normalInv(1-alpha/2) : normalInv(1-alpha);
-}
-function tCrit(alpha, df, twoSided){
-  return twoSided ? tInv(1-alpha/2, df) : tInv(1-alpha, df);
-}
+function zCrit(alpha, twoSided){ return twoSided ? normalInv(1-alpha/2) : normalInv(1-alpha); }
+function tCrit(alpha, df, twoSided){ return twoSided ? tInv(1-alpha/2, df) : tInv(1-alpha, df); }
+
 function pvalZ(z, alt){
   const c=normalCdf(z);
   if(alt==='two') return 2*Math.min(c, 1-c);
@@ -481,12 +412,53 @@ function pvalT(t, df, alt){
   return 1-c;
 }
 
+/* ---- Sync logic ---- */
+function clamp01(x){ return (x>0 && x<1) ? x : null; }
+
+function syncFromCL(){
+  if(!syncEl.checked) return;
+  const CL = clamp01(Number(clEl.value));
+  if(CL===null) return;
+  alphaEl.value = (1-CL).toFixed(3);
+}
+function syncFromAlpha(){
+  if(!syncEl.checked) return;
+  const a = clamp01(Number(alphaEl.value));
+  if(a===null) return;
+  clEl.value = (1-a).toFixed(3);
+}
+
+clEl.addEventListener('input', syncFromCL);
+alphaEl.addEventListener('input', syncFromAlpha);
+
+/* When toggling sync on, immediately reconcile using current mode */
+syncEl.addEventListener('change', ()=>{
+  if(!syncEl.checked) return;
+  if(modeEl.value==='ci') syncFromCL();
+  else syncFromAlpha();
+});
+
+/* Enable/disable CL and alpha inputs depending on mode */
+function updateModeUI(){
+  const isCI = (modeEl.value === 'ci');
+  clEl.disabled = !isCI;
+  alphaEl.disabled = isCI;
+
+  altWrap.style.display = (modeEl.value==='ht') ? 'block' : 'none';
+
+  // Optional: keep values consistent when switching modes
+  if(syncEl.checked){
+    if(isCI) syncFromAlpha(); else syncFromCL();
+  }
+}
+
 function renderForm(){
+  updateModeUI();
+
   const type=typeEl.value;
   const mode=modeEl.value;
-  altWrap.style.display = (mode==='ht') ? 'block' : 'none';
 
-  let html = '';
+  let html='';
 
   if(type==='mean1'){
     html += `
@@ -696,25 +668,32 @@ function renderForm(){
 }
 
 function compute(){
-  const mode=modeEl.value;
-  const type=typeEl.value;
-  const alt=altEl.value;
+  const mode = modeEl.value;
+  const type = typeEl.value;
+  const alt  = altEl.value;
 
-  if(mode==='ci'){
-    const CL=Number(confEl.value);
-    if(!(CL>0 && CL<1)) { outEl.textContent="Error: Confidence level must be between 0 and 1."; return; }
-    const alpha=1-CL;
+  if(mode === 'ci'){
+    const CL = Number(clEl.value);
+    if(!(CL > 0 && CL < 1)){
+      outEl.textContent="Error: Confidence Level (CL) must be between 0 and 1.";
+      return;
+    }
+    const alpha = 1 - CL;
     outEl.textContent = runCI(type, alpha);
-  }else{
-    const alpha=Number(confEl.value);
-    if(!(alpha>0 && alpha<1)) { outEl.textContent="Error: α must be between 0 and 1."; return; }
+
+  } else {
+    const alpha = Number(alphaEl.value);
+    if(!(alpha > 0 && alpha < 1)){
+      outEl.textContent="Error: Significance Level (α) must be between 0 and 1.";
+      return;
+    }
     outEl.textContent = runHT(type, alpha, alt);
   }
 }
 
 function runCI(type, alpha){
   let o=[];
-  const CL=(1-alpha);
+  const CL=1-alpha;
 
   if(type==='mean1'){
     const method=readText('m1_method');
@@ -736,7 +715,7 @@ function runCI(type, alpha){
 
     o.push(`Mode: Confidence Interval`);
     o.push(`Procedure: One Mean`);
-    o.push(`Confidence level: ${fmt(CL,6)}   (α=${fmt(alpha,6)})`);
+    o.push(`Confidence level (CL): ${fmt(CL,6)}   (α=${fmt(alpha,6)})`);
     o.push(`Distribution used: ${dist}`);
     o.push(`SE formula: ${sigmaKnown ? "SE = σ/√n" : "SE = s/√n"}`);
     o.push(`SE = ${fmt(se)}`);
@@ -772,12 +751,11 @@ function runCI(type, alpha){
       crit=tCrit(alpha,df,true);
     }
 
-    const me=crit*se;
-    const lo=diff-me, hi=diff+me;
+    const lo=diff-crit*se, hi=diff+crit*se;
 
     o.push(`Mode: Confidence Interval`);
     o.push(`Procedure: Two Means (Independent)`);
-    o.push(`Confidence level: ${fmt(CL,6)}   (α=${fmt(alpha,6)})`);
+    o.push(`Confidence level (CL): ${fmt(CL,6)}   (α=${fmt(alpha,6)})`);
     o.push(`Distribution used: ${dist}`);
     if(df!==null) o.push(`df ≈ ${fmt(df)}`);
     o.push(`SE formula: ${sigmaKnown ? "SE = √(σ₁²/n₁ + σ₂²/n₂)" : "SE = √(s₁²/n₁ + s₂²/n₂)  (Welch)"}`);
@@ -814,7 +792,7 @@ function runCI(type, alpha){
 
     o.push(`Mode: Confidence Interval`);
     o.push(`Procedure: Matched Pairs (μd)`);
-    o.push(`Confidence level: ${fmt(CL,6)}   (α=${fmt(alpha,6)})`);
+    o.push(`Confidence level (CL): ${fmt(CL,6)}   (α=${fmt(alpha,6)})`);
     o.push(`Distribution used: t (df=${df})`);
     o.push(`SE formula: SE = s_d/√n`);
     o.push(`SE = ${fmt(se)}`);
@@ -833,7 +811,7 @@ function runCI(type, alpha){
 
     o.push(`Mode: Confidence Interval`);
     o.push(`Procedure: One Proportion`);
-    o.push(`Confidence level: ${fmt(CL,6)}   (α=${fmt(alpha,6)})`);
+    o.push(`Confidence level (CL): ${fmt(CL,6)}   (α=${fmt(alpha,6)})`);
     o.push(`Distribution used: Normal (z)`);
     o.push(`p̂ = ${fmt(ph)}`);
     o.push(`SE formula: SE = √( p̂(1−p̂)/n )`);
@@ -855,7 +833,7 @@ function runCI(type, alpha){
 
     o.push(`Mode: Confidence Interval`);
     o.push(`Procedure: Two Proportions`);
-    o.push(`Confidence level: ${fmt(CL,6)}   (α=${fmt(alpha,6)})`);
+    o.push(`Confidence level (CL): ${fmt(CL,6)}   (α=${fmt(alpha,6)})`);
     o.push(`Distribution used: Normal (z)`);
     o.push(`p̂₁=${fmt(p1)}   p̂₂=${fmt(p2)}`);
     o.push(`SE formula: SE = √( p̂₁(1−p̂₁)/n₁ + p̂₂(1−p̂₂)/n₂ )`);
@@ -870,6 +848,7 @@ function runCI(type, alpha){
 
 function runHT(type, alpha, alt){
   let o=[];
+
   if(type==='mean1'){
     const method=readText('m1_method');
     const sigmaKnown=(readText('m1_sigmaKnown')==='yes');
@@ -887,9 +866,7 @@ function runHT(type, alpha, alt){
 
     const dist=sigmaKnown ? "Normal (z)" : `t (df=${n-1})`;
     const p = sigmaKnown ? pvalZ(stat,alt) : pvalT(stat,n-1,alt);
-    const crit = sigmaKnown
-      ? zCrit(alpha, alt==='two')
-      : tCrit(alpha, n-1, alt==='two');
+    const crit = sigmaKnown ? zCrit(alpha, alt==='two') : tCrit(alpha, n-1, alt==='two');
 
     const reject = (p < alpha);
 
@@ -976,6 +953,7 @@ function runHT(type, alpha, alt){
     const stat=(dbar-d0)/se;
     const p=pvalT(stat,df,alt);
     const crit=tCrit(alpha,df, alt==='two');
+
     const reject = (p < alpha);
 
     o.push(`Mode: Hypothesis Test`);
@@ -995,11 +973,13 @@ function runHT(type, alpha, alt){
     const x=readNum('pr1_x'), n=readNum('pr1_n');
     const p0=readNum('pr1_p0');
     if(!(n>0) || x<0 || x>n || !(p0>0 && p0<1)) return "Error: Check inputs (0 ≤ x ≤ n, 0<p₀<1).";
+
     const ph=x/n;
     const se=Math.sqrt(p0*(1-p0)/n);
     const z=(ph-p0)/se;
     const p=pvalZ(z,alt);
     const crit=zCrit(alpha, alt==='two');
+
     const reject = (p < alpha);
 
     o.push(`Mode: Hypothesis Test`);
@@ -1027,6 +1007,7 @@ function runHT(type, alpha, alt){
     const z=((p1-p2)-d0)/se;
     const p=pvalZ(z,alt);
     const crit=zCrit(alpha, alt==='two');
+
     const reject = (p < alpha);
 
     o.push(`Mode: Hypothesis Test`);
@@ -1049,11 +1030,14 @@ function runHT(type, alpha, alt){
 function reset(){
   modeEl.value='ci';
   typeEl.value='mean1';
-  confEl.value='0.95';
+  clEl.value='0.95';
+  alphaEl.value='0.05';
   altEl.value='two';
+  syncEl.checked=true;
   renderForm();
   outEl.textContent="Ready.";
 }
+
 function loadExample(){
   const t=typeEl.value, m=modeEl.value;
   if(t==='mean1'){
@@ -1094,21 +1078,9 @@ function loadExample(){
   outEl.textContent="Example loaded. Click Compute.";
 }
 
-modeEl.addEventListener('change', () => {
-  const val = Number(confEl.value);
-
-  if(modeEl.value === 'ht'){
-    // If looks like CL, convert to alpha
-    if(val > 0.5) confEl.value = (1 - val).toFixed(3);
-  } else {
-    // If looks like alpha, convert to CL
-    if(val < 0.5) confEl.value = (1 - val).toFixed(3);
-  }
-
-  renderForm();
-});
-
-typeEl.addEventListener('change', renderForm);
+/* listeners */
+modeEl.addEventListener('change', ()=>{ renderForm(); });
+typeEl.addEventListener('change', ()=>{ renderForm(); });
 document.getElementById('calcBtn').addEventListener('click', compute);
 document.getElementById('resetBtn').addEventListener('click', reset);
 document.getElementById('exampleBtn').addEventListener('click', loadExample);
