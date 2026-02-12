@@ -891,7 +891,7 @@ function runHT(type, alpha, alt){
       ? zCrit(alpha, alt==='two')
       : tCrit(alpha, n-1, alt==='two');
 
-    const reject = (alt==='two') ? (Math.abs(stat)>crit) : (alt==='lt' ? (stat<-crit) : (stat>crit));
+    const reject = (p < alpha);;
 
     o.push(`Mode: Hypothesis Test`);
     o.push(`Procedure: One Mean`);
@@ -934,7 +934,7 @@ function runHT(type, alpha, alt){
       crit=tCrit(alpha,df, alt==='two');
     }
 
-    const reject = (alt==='two') ? (Math.abs(stat)>crit) : (alt==='lt' ? (stat<-crit) : (stat>crit));
+    const reject = (p < alpha);
 
     o.push(`Mode: Hypothesis Test`);
     o.push(`Procedure: Two Means (Independent)`);
@@ -976,7 +976,7 @@ function runHT(type, alpha, alt){
     const stat=(dbar-d0)/se;
     const p=pvalT(stat,df,alt);
     const crit=tCrit(alpha,df, alt==='two');
-    const reject = (alt==='two') ? (Math.abs(stat)>crit) : (alt==='lt' ? (stat<-crit) : (stat>crit));
+    const reject = (p < alpha);
 
     o.push(`Mode: Hypothesis Test`);
     o.push(`Procedure: Matched Pairs (μd)`);
@@ -1000,7 +1000,7 @@ function runHT(type, alpha, alt){
     const z=(ph-p0)/se;
     const p=pvalZ(z,alt);
     const crit=zCrit(alpha, alt==='two');
-    const reject = (alt==='two') ? (Math.abs(z)>crit) : (alt==='lt' ? (z<-crit) : (z>crit));
+    const reject = (p < alpha);
 
     o.push(`Mode: Hypothesis Test`);
     o.push(`Procedure: One Proportion`);
@@ -1027,7 +1027,7 @@ function runHT(type, alpha, alt){
     const z=((p1-p2)-d0)/se;
     const p=pvalZ(z,alt);
     const crit=zCrit(alpha, alt==='two');
-    const reject = (alt==='two') ? (Math.abs(z)>crit) : (alt==='lt' ? (z<-crit) : (z>crit));
+    const reject = (p < alpha);
 
     o.push(`Mode: Hypothesis Test`);
     o.push(`Procedure: Two Proportions`);
