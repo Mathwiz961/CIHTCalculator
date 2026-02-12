@@ -1,0 +1,1090 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Confidence Interval & Hypothesis Test Calculator</title>
+  <style>
+    :root{
+      /* ERAU-ish */
+      --navy1:#003A63;
+      --navy2:#002B4A;
+      --gold:#FFC72C;
+
+      /* UI */
+      --page:#ffffff;
+      --panel:#f5f6f8;
+      --card:#ffffff;
+      --text:#0b1220;
+      --muted:#5b6776;
+      --line:rgba(10, 25, 41, .14);
+
+      --btn:#0b5ea8;
+      --btnHover:#0a4f8c;
+
+      --radius:14px;
+      --shadow:0 10px 24px rgba(0,0,0,.10);
+      --shadowSoft:0 8px 18px rgba(0,0,0,.08);
+
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      --sans: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      color:var(--text);
+      background:var(--page);
+    }
+
+    /* Title (like your page title above the banner) */
+    .pageTitle{
+      max-width:1200px;
+      margin:18px auto 8px;
+      padding:0 18px;
+      font-size:34px;
+      font-weight:300;
+      color:#6b7280;
+      letter-spacing:.2px;
+    }
+
+    /* Banner (match screenshot) */
+    .banner{
+      background:linear-gradient(180deg, #0b5a99 0%, #003A63 55%, #002B4A 100%);
+      border-bottom:3px solid var(--gold);
+      padding:14px 0;
+    }
+    .bannerInner{
+      max-width:1200px;
+      margin:0 auto;
+      padding:0 18px;
+      display:flex;
+      align-items:center;
+      justify-content:center; /* centered like screenshot */
+      gap:14px;
+    }
+    .accentPill{
+      width:10px;
+      height:34px;
+      border-radius:10px;
+      background:var(--gold);
+      box-shadow:0 4px 14px rgba(255,199,44,.35);
+      border:1px solid rgba(0,0,0,.08);
+    }
+    .bannerText{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+      min-width:260px;
+    }
+    .bannerText .h{
+      color:#fff;
+      font-weight:700;
+      font-size:16px;
+      line-height:1.1;
+    }
+    .bannerText .sub{
+      color:rgba(255,255,255,.88);
+      font-size:12px;
+      line-height:1.2;
+    }
+
+    /* Layout like screenshot: two panels centered with gap */
+    .wrap{
+      max-width:1200px;
+      margin:26px auto 40px;
+      padding:0 18px;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:18px;
+      justify-content:center;
+      align-items:start;
+      max-width:940px; /* forces centered cards like your image */
+      margin:0 auto;
+    }
+    @media (max-width: 980px){
+      .grid{grid-template-columns:1fr; max-width:620px;}
+    }
+
+    .card{
+      background:var(--panel);
+      border:1px solid rgba(0,0,0,.08);
+      border-radius:var(--radius);
+      box-shadow:var(--shadowSoft);
+      overflow:hidden;
+    }
+    .cardInner{
+      padding:14px 16px 16px;
+    }
+    .cardTitle{
+      font-weight:700;
+      font-size:13px;
+      color:#0b1220;
+      margin:0 0 10px 0;
+    }
+
+    label{
+      display:block;
+      font-size:11px;
+      color:var(--muted);
+      margin:10px 0 6px;
+    }
+    input, select, textarea{
+      width:100%;
+      padding:10px 10px;
+      border-radius:10px;
+      border:1px solid rgba(0,0,0,.12);
+      background:#fff;
+      color:var(--text);
+      outline:none;
+      font-size:13px;
+    }
+    input:focus, select:focus, textarea:focus{
+      border-color: rgba(11,94,168,.55);
+      box-shadow: 0 0 0 3px rgba(11,94,168,.14);
+    }
+    textarea{min-height:110px; resize:vertical; font-family:var(--mono); font-size:12px;}
+
+    .row2{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+    @media (max-width: 520px){ .row2{grid-template-columns:1fr;} }
+
+    .btnRow{
+      display:flex;
+      gap:10px;
+      margin-top:12px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .btn{
+      border:none;
+      border-radius:999px;
+      padding:9px 14px;
+      font-weight:700;
+      font-size:13px;
+      cursor:pointer;
+    }
+    .btn.primary{
+      background:var(--btn);
+      color:#fff;
+      box-shadow:0 8px 18px rgba(11,94,168,.20);
+    }
+    .btn.primary:hover{ background:var(--btnHover); }
+    .btn.ghost{
+      background:#fff;
+      color:var(--btn);
+      border:1px solid rgba(11,94,168,.35);
+    }
+    .btn.ghost:hover{
+      background:rgba(11,94,168,.06);
+    }
+
+    .help{
+      margin-top:10px;
+      font-size:11px;
+      color:var(--muted);
+      line-height:1.35;
+    }
+
+    /* Output looks like your "Output" textbox */
+    .outputLabel{
+      margin-top:8px;
+      font-size:11px;
+      color:var(--muted);
+    }
+    .outputBox{
+      margin-top:6px;
+      background:#fff;
+      border:1px solid rgba(0,0,0,.12);
+      border-radius:10px;
+      padding:10px 10px;
+      font-family:var(--mono);
+      font-size:12px;
+      white-space:pre-wrap;
+      min-height:140px;
+    }
+    .tip{
+      margin-top:10px;
+      font-size:11px;
+      color:var(--muted);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="pageTitle">Confidence Interval & Hypothesis Test Calculator</div>
+
+  <div class="banner">
+    <div class="bannerInner">
+      <div class="accentPill" aria-hidden="true"></div>
+      <div class="bannerText">
+        <div class="h">CI / Hypothesis Test Calculator</div>
+        <div class="sub">Means (z/t) • Two Means (Welch t / z) • Matched Pairs (t) • Proportions (z) • Outputs: critical values, df, SE formulas, p-values</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="grid">
+
+      <!-- LEFT: setup -->
+      <section class="card">
+        <div class="cardInner">
+          <div class="cardTitle">1) Procedure & Parameters</div>
+
+          <div class="row2">
+            <div>
+              <label for="mode">Mode</label>
+              <select id="mode">
+                <option value="ci">Confidence Interval</option>
+                <option value="ht">Hypothesis Test</option>
+              </select>
+            </div>
+            <div>
+              <label for="type">Procedure</label>
+              <select id="type">
+                <option value="mean1">One Mean (μ)</option>
+                <option value="mean2">Two Means (μ1 − μ2), Independent</option>
+                <option value="paired">Matched Pairs (μd)</option>
+                <option value="prop1">One Proportion (p)</option>
+                <option value="prop2">Two Proportions (p1 − p2)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row2">
+            <div>
+              <label for="conf">Confidence Level (CI) / α (Test)</label>
+              <input id="conf" type="number" step="0.001" value="0.95" />
+            </div>
+            <div id="altWrap" style="display:none">
+              <label for="alt">Alternative (Hₐ)</label>
+              <select id="alt">
+                <option value="two">Two-sided (≠)</option>
+                <option value="lt">Left-tailed (&lt;)</option>
+                <option value="gt">Right-tailed (&gt;)</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="formArea"></div>
+
+          <div class="btnRow">
+            <button class="btn primary" id="calcBtn">Compute</button>
+            <button class="btn ghost" id="resetBtn" type="button">Reset</button>
+            <button class="btn ghost" id="exampleBtn" type="button">Load Example</button>
+          </div>
+
+          <div class="help">
+            Default choices follow standard intro stats conventions:
+            <ul style="margin:6px 0 0 18px; padding:0">
+              <li>σ known → z; σ unknown → t.</li>
+              <li>Two-mean unknown σ uses <b>Welch’s t</b> by default.</li>
+              <li>Two-proportion tests use pooled p̂ for SE.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT: output -->
+      <section class="card">
+        <div class="cardInner">
+          <div class="cardTitle">2) Results</div>
+
+          <div class="outputLabel">Output</div>
+          <div id="output" class="outputBox">Ready.</div>
+
+          <div class="tip">
+            Tip: For raw data input, separate values with spaces/commas/newlines. For paired lists, enter x1 x2 per line.
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+<script>
+/* =========================
+   Math helpers: Normal + t
+   ========================= */
+
+// erf approximation
+function erf(x){
+  const sign = x < 0 ? -1 : 1;
+  x = Math.abs(x);
+  const a1=0.254829592, a2=-0.284496736, a3=1.421413741, a4=-1.453152027, a5=1.061405429;
+  const p=0.3275911;
+  const t=1/(1+p*x);
+  const y=1-((((a5*t+a4)*t+a3)*t+a2)*t+a1)*t*Math.exp(-x*x);
+  return sign*y;
+}
+function normalCdf(z){ return 0.5*(1+erf(z/Math.SQRT2)); }
+
+// Acklam inverse normal
+function normalInv(p){
+  if(p<=0 || p>=1) return NaN;
+  const a=[-3.969683028665376e+01, 2.209460984245205e+02,-2.759285104469687e+02, 1.383577518672690e+02,-3.066479806614716e+01, 2.506628277459239e+00];
+  const b=[-5.447609879822406e+01, 1.615858368580409e+02,-1.556989798598866e+02, 6.680131188771972e+01,-1.328068155288572e+01];
+  const c=[-7.784894002430293e-03,-3.223964580411365e-01,-2.400758277161838e+00,-2.549732539343734e+00, 4.374664141464968e+00, 2.938163982698783e+00];
+  const d=[ 7.784695709041462e-03, 3.224671290700398e-01, 2.445134137142996e+00, 3.754408661907416e+00];
+  const plow=0.02425, phigh=1-plow;
+  let q,r;
+  if(p<plow){
+    q=Math.sqrt(-2*Math.log(p));
+    return (((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5]) /
+           ((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);
+  }
+  if(p>phigh){
+    q=Math.sqrt(-2*Math.log(1-p));
+    return -(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5]) /
+            ((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);
+  }
+  q=p-0.5; r=q*q;
+  return (((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q /
+         (((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1);
+}
+
+// logGamma (Lanczos)
+function logGamma(z){
+  const p=[676.5203681218851, -1259.1392167224028, 771.32342877765313,
+           -176.61502916214059, 12.507343278686905, -0.13857109526572012,
+           9.9843695780195716e-6, 1.5056327351493116e-7];
+  if(z<0.5) return Math.log(Math.PI) - Math.log(Math.sin(Math.PI*z)) - logGamma(1-z);
+  z-=1;
+  let x=0.99999999999980993;
+  for(let i=0;i<p.length;i++) x+=p[i]/(z+i+1);
+  const t=z+p.length-0.5;
+  return 0.5*Math.log(2*Math.PI) + (z+0.5)*Math.log(t) - t + Math.log(x);
+}
+
+// incomplete beta via continued fraction
+function betacf(a,b,x){
+  const MAXIT=200, EPS=3e-12, FPMIN=1e-30;
+  let qab=a+b, qap=a+1, qam=a-1;
+  let c=1, d=1 - qab*x/qap;
+  if(Math.abs(d)<FPMIN) d=FPMIN;
+  d=1/d;
+  let h=d;
+  for(let m=1;m<=MAXIT;m++){
+    let m2=2*m;
+    let aa = m*(b-m)*x/((qam+m2)*(a+m2));
+    d = 1 + aa*d; if(Math.abs(d)<FPMIN) d=FPMIN; d=1/d;
+    c = 1 + aa/c; if(Math.abs(c)<FPMIN) c=FPMIN;
+    h *= d*c;
+
+    aa = -(a+m)*(qab+m)*x/((a+m2)*(qap+m2));
+    d = 1 + aa*d; if(Math.abs(d)<FPMIN) d=FPMIN; d=1/d;
+    c = 1 + aa/c; if(Math.abs(c)<FPMIN) c=FPMIN;
+    let del = d*c;
+    h *= del;
+    if(Math.abs(del-1) < EPS) break;
+  }
+  return h;
+}
+function betai(a,b,x){
+  if(x<=0) return 0;
+  if(x>=1) return 1;
+  const lnB = logGamma(a)+logGamma(b)-logGamma(a+b);
+  const front = Math.exp(Math.log(x)*a + Math.log(1-x)*b - lnB) / a;
+  let res = front * betacf(a,b,x);
+  if(x < (a+1)/(a+b+2)) return res;
+  const front2 = Math.exp(Math.log(1-x)*b + Math.log(x)*a - lnB) / b;
+  return 1 - front2*betacf(b,a,1-x);
+}
+function tCdf(t, df){
+  const x = df/(df+t*t);
+  const ib = betai(df/2, 0.5, x);
+  return (t>=0) ? 1 - 0.5*ib : 0.5*ib;
+}
+function tInv(p, df){
+  if(p<=0 || p>=1) return NaN;
+  let lo=-50, hi=50;
+  while(tCdf(lo,df) > p) { hi=lo; lo*=2; if(lo<-1e6) break; }
+  while(tCdf(hi,df) < p) { lo=hi; hi*=2; if(hi>1e6) break; }
+  for(let i=0;i<120;i++){
+    const mid=(lo+hi)/2;
+    (tCdf(mid,df) < p) ? (lo=mid) : (hi=mid);
+  }
+  return (lo+hi)/2;
+}
+
+/* =========================
+   Stats + UI
+   ========================= */
+const modeEl=document.getElementById('mode');
+const typeEl=document.getElementById('type');
+const confEl=document.getElementById('conf');
+const altWrap=document.getElementById('altWrap');
+const altEl=document.getElementById('alt');
+const formArea=document.getElementById('formArea');
+const outEl=document.getElementById('output');
+
+function fmt(x, d=6){
+  if(!isFinite(x)) return String(x);
+  const ax=Math.abs(x);
+  if(ax!==0 && (ax<1e-4 || ax>=1e6)) return x.toExponential(6);
+  return Number(x.toFixed(d)).toString();
+}
+function readNum(id){ return Number(document.getElementById(id).value); }
+function readText(id){ return document.getElementById(id).value.trim(); }
+
+function parseDataList(text){
+  if(!text) return [];
+  return text.split(/[\s,]+/g).map(s=>s.trim()).filter(Boolean).map(Number).filter(v=>Number.isFinite(v));
+}
+function mean(a){ return a.reduce((s,x)=>s+x,0)/a.length; }
+function sampleVar(a){
+  const m=mean(a); let ss=0;
+  for(const x of a) ss+=(x-m)*(x-m);
+  return ss/(a.length-1);
+}
+function sampleSd(a){ return Math.sqrt(sampleVar(a)); }
+
+function zCrit(alpha, twoSided){
+  return twoSided ? normalInv(1-alpha/2) : normalInv(1-alpha);
+}
+function tCrit(alpha, df, twoSided){
+  return twoSided ? tInv(1-alpha/2, df) : tInv(1-alpha, df);
+}
+function pvalZ(z, alt){
+  const c=normalCdf(z);
+  if(alt==='two') return 2*Math.min(c, 1-c);
+  if(alt==='lt') return c;
+  return 1-c;
+}
+function pvalT(t, df, alt){
+  const c=tCdf(t,df);
+  if(alt==='two') return 2*Math.min(c, 1-c);
+  if(alt==='lt') return c;
+  return 1-c;
+}
+
+function renderForm(){
+  const type=typeEl.value;
+  const mode=modeEl.value;
+  altWrap.style.display = (mode==='ht') ? 'block' : 'none';
+
+  let html = '';
+
+  if(type==='mean1'){
+    html += `
+      <label>Input method</label>
+      <select id="m1_method">
+        <option value="summary">Summary (n, x̄, s/σ)</option>
+        <option value="raw">Raw data list</option>
+      </select>
+
+      <div class="row2">
+        <div>
+          <label>σ known?</label>
+          <select id="m1_sigmaKnown">
+            <option value="no">No (use t)</option>
+            <option value="yes">Yes (use z)</option>
+          </select>
+        </div>
+        <div id="m1_mu0Wrap" style="${mode==='ht'?'':'display:none'}">
+          <label>H₀ value (μ₀)</label>
+          <input id="m1_mu0" type="number" step="any" value="50" />
+        </div>
+      </div>
+
+      <div class="row2">
+        <div>
+          <label>n</label>
+          <input id="m1_n" type="number" step="1" value="25" />
+        </div>
+        <div>
+          <label>x̄</label>
+          <input id="m1_xbar" type="number" step="any" value="48" />
+        </div>
+      </div>
+
+      <label>s (or σ if known)</label>
+      <input id="m1_s" type="number" step="any" value="10" />
+
+      <div id="m1_rawWrap" style="display:none">
+        <label>Raw data</label>
+        <textarea id="m1_raw">44 51 49 47 52 46 50 45 48 49</textarea>
+      </div>
+    `;
+  }
+
+  if(type==='mean2'){
+    html += `
+      <label>Input method</label>
+      <select id="m2_method">
+        <option value="summary">Summary (n, x̄, s/σ)</option>
+        <option value="raw">Raw data lists</option>
+      </select>
+
+      <div class="row2">
+        <div>
+          <label>σ’s known?</label>
+          <select id="m2_sigmaKnown">
+            <option value="no">No (use Welch t)</option>
+            <option value="yes">Yes (use z)</option>
+          </select>
+        </div>
+        <div id="m2_d0Wrap" style="${mode==='ht'?'':'display:none'}">
+          <label>H₀ difference (μ₁−μ₂ = d₀)</label>
+          <input id="m2_d0" type="number" step="any" value="0" />
+        </div>
+      </div>
+
+      <div class="row2">
+        <div>
+          <label>n₁</label>
+          <input id="m2_n1" type="number" step="1" value="30" />
+        </div>
+        <div>
+          <label>x̄₁</label>
+          <input id="m2_x1" type="number" step="any" value="102" />
+        </div>
+      </div>
+      <label>s₁ (or σ₁ if known)</label>
+      <input id="m2_s1" type="number" step="any" value="12" />
+
+      <div class="row2">
+        <div>
+          <label>n₂</label>
+          <input id="m2_n2" type="number" step="1" value="28" />
+        </div>
+        <div>
+          <label>x̄₂</label>
+          <input id="m2_x2" type="number" step="any" value="96" />
+        </div>
+      </div>
+      <label>s₂ (or σ₂ if known)</label>
+      <input id="m2_s2" type="number" step="any" value="15" />
+
+      <div id="m2_rawWrap" style="display:none">
+        <div class="row2">
+          <div>
+            <label>Sample 1 raw data</label>
+            <textarea id="m2_raw1">98 105 100 110 95 108 101 103</textarea>
+          </div>
+          <div>
+            <label>Sample 2 raw data</label>
+            <textarea id="m2_raw2">90 94 102 99 97 93 96 98</textarea>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  if(type==='paired'){
+    html += `
+      <label>Input method</label>
+      <select id="p_method">
+        <option value="diffs">Differences list (d = x₁ − x₂)</option>
+        <option value="pairs">Paired lists (x₁ and x₂)</option>
+        <option value="summary">Summary (n, d̄, s_d)</option>
+      </select>
+
+      <div class="row2">
+        <div>
+          <label>n</label>
+          <input id="p_n" type="number" step="1" value="12" />
+        </div>
+        <div id="p_d0Wrap" style="${mode==='ht'?'':'display:none'}">
+          <label>H₀ value (μ_d = d₀)</label>
+          <input id="p_d0" type="number" step="any" value="0" />
+        </div>
+      </div>
+
+      <div class="row2">
+        <div>
+          <label>d̄</label>
+          <input id="p_dbar" type="number" step="any" value="2.4" />
+        </div>
+        <div>
+          <label>s_d</label>
+          <input id="p_sd" type="number" step="any" value="3.1" />
+        </div>
+      </div>
+
+      <label>Data input</label>
+      <textarea id="p_text">1 3 2 -1 4 6 0 2 5 1 3 2</textarea>
+    `;
+  }
+
+  if(type==='prop1'){
+    html += `
+      <div class="row2">
+        <div>
+          <label>Successes (x)</label>
+          <input id="pr1_x" type="number" step="1" value="42" />
+        </div>
+        <div>
+          <label>Trials (n)</label>
+          <input id="pr1_n" type="number" step="1" value="100" />
+        </div>
+      </div>
+      <div id="pr1_p0Wrap" style="${mode==='ht'?'':'display:none'}">
+        <label>H₀ value (p₀)</label>
+        <input id="pr1_p0" type="number" step="any" value="0.50" />
+      </div>
+    `;
+  }
+
+  if(type==='prop2'){
+    html += `
+      <div class="row2">
+        <div>
+          <label>Sample 1 successes (x₁)</label>
+          <input id="pr2_x1" type="number" step="1" value="55" />
+        </div>
+        <div>
+          <label>Sample 1 trials (n₁)</label>
+          <input id="pr2_n1" type="number" step="1" value="120" />
+        </div>
+      </div>
+
+      <div class="row2">
+        <div>
+          <label>Sample 2 successes (x₂)</label>
+          <input id="pr2_x2" type="number" step="1" value="41" />
+        </div>
+        <div>
+          <label>Sample 2 trials (n₂)</label>
+          <input id="pr2_n2" type="number" step="1" value="110" />
+        </div>
+      </div>
+
+      <div id="pr2_d0Wrap" style="${mode==='ht'?'':'display:none'}">
+        <label>H₀ difference (p₁−p₂ = d₀)</label>
+        <input id="pr2_d0" type="number" step="any" value="0" />
+      </div>
+    `;
+  }
+
+  formArea.innerHTML = html;
+
+  // toggles for raw inputs
+  if(type==='mean1'){
+    const m=document.getElementById('m1_method');
+    const raw=document.getElementById('m1_rawWrap');
+    m.addEventListener('change', ()=> raw.style.display = (m.value==='raw') ? 'block' : 'none');
+  }
+  if(type==='mean2'){
+    const m=document.getElementById('m2_method');
+    const raw=document.getElementById('m2_rawWrap');
+    m.addEventListener('change', ()=> raw.style.display = (m.value==='raw') ? 'block' : 'none');
+  }
+}
+
+function compute(){
+  const mode=modeEl.value;
+  const type=typeEl.value;
+  const alt=altEl.value;
+
+  if(mode==='ci'){
+    const CL=Number(confEl.value);
+    if(!(CL>0 && CL<1)) { outEl.textContent="Error: Confidence level must be between 0 and 1."; return; }
+    const alpha=1-CL;
+    outEl.textContent = runCI(type, alpha);
+  }else{
+    const alpha=Number(confEl.value);
+    if(!(alpha>0 && alpha<1)) { outEl.textContent="Error: α must be between 0 and 1."; return; }
+    outEl.textContent = runHT(type, alpha, alt);
+  }
+}
+
+function runCI(type, alpha){
+  let o=[];
+  const CL=(1-alpha);
+
+  if(type==='mean1'){
+    const method=readText('m1_method');
+    const sigmaKnown=(readText('m1_sigmaKnown')==='yes');
+    let n=readNum('m1_n'), xbar=readNum('m1_xbar'), s=readNum('m1_s');
+
+    if(method==='raw'){
+      const a=parseDataList(readText('m1_raw'));
+      if(a.length<2) return "Error: Raw data needs at least 2 values.";
+      n=a.length; xbar=mean(a);
+      if(!sigmaKnown) s=sampleSd(a);
+    }
+
+    const se=s/Math.sqrt(n);
+    const dist = sigmaKnown ? "Normal (z)" : `t (df=${n-1})`;
+    const crit = sigmaKnown ? zCrit(alpha,true) : tCrit(alpha,n-1,true);
+    const me=crit*se;
+    const lo=xbar-me, hi=xbar+me;
+
+    o.push(`Mode: Confidence Interval`);
+    o.push(`Procedure: One Mean`);
+    o.push(`Confidence level: ${fmt(CL,6)}   (α=${fmt(alpha,6)})`);
+    o.push(`Distribution used: ${dist}`);
+    o.push(`SE formula: ${sigmaKnown ? "SE = σ/√n" : "SE = s/√n"}`);
+    o.push(`SE = ${fmt(se)}`);
+    o.push(`Critical value: ${sigmaKnown ? "z*" : "t*"} = ${fmt(crit)}`);
+    o.push(`Margin of error: ME = ${fmt(me)}`);
+    o.push(`CI: [ ${fmt(lo)} , ${fmt(hi)} ]`);
+    return o.join("\n");
+  }
+
+  if(type==='mean2'){
+    const method=readText('m2_method');
+    const sigmaKnown=(readText('m2_sigmaKnown')==='yes');
+    let n1=readNum('m2_n1'), n2=readNum('m2_n2');
+    let x1=readNum('m2_x1'), x2=readNum('m2_x2');
+    let s1=readNum('m2_s1'), s2=readNum('m2_s2');
+
+    if(method==='raw'){
+      const a1=parseDataList(readText('m2_raw1'));
+      const a2=parseDataList(readText('m2_raw2'));
+      if(a1.length<2 || a2.length<2) return "Error: Each raw sample needs at least 2 values.";
+      n1=a1.length; n2=a2.length; x1=mean(a1); x2=mean(a2);
+      if(!sigmaKnown){ s1=sampleSd(a1); s2=sampleSd(a2); }
+    }
+
+    const diff=x1-x2;
+    const se=Math.sqrt((s1*s1)/n1 + (s2*s2)/n2);
+
+    let dist="Normal (z)", crit=zCrit(alpha,true), df=null;
+    if(!sigmaKnown){
+      const a=(s1*s1)/n1, b=(s2*s2)/n2;
+      df = (a+b)*(a+b) / ( (a*a)/(n1-1) + (b*b)/(n2-1) );
+      dist=`Welch t (df≈${fmt(df,4)})`;
+      crit=tCrit(alpha,df,true);
+    }
+
+    const me=crit*se;
+    const lo=diff-me, hi=diff+me;
+
+    o.push(`Mode: Confidence Interval`);
+    o.push(`Procedure: Two Means (Independent)`);
+    o.push(`Confidence level: ${fmt(CL,6)}   (α=${fmt(alpha,6)})`);
+    o.push(`Distribution used: ${dist}`);
+    if(df!==null) o.push(`df ≈ ${fmt(df)}`);
+    o.push(`SE formula: ${sigmaKnown ? "SE = √(σ₁²/n₁ + σ₂²/n₂)" : "SE = √(s₁²/n₁ + s₂²/n₂)  (Welch)"}`);
+    o.push(`SE = ${fmt(se)}`);
+    o.push(`Critical value: ${sigmaKnown ? "z*" : "t*"} = ${fmt(crit)}`);
+    o.push(`CI for (μ₁−μ₂): [ ${fmt(lo)} , ${fmt(hi)} ]`);
+    return o.join("\n");
+  }
+
+  if(type==='paired'){
+    const pm=readText('p_method');
+    let n=readNum('p_n'), dbar=readNum('p_dbar'), sd=readNum('p_sd');
+
+    if(pm==='diffs'){
+      const d=parseDataList(readText('p_text'));
+      if(d.length<2) return "Error: Differences list needs at least 2 values.";
+      n=d.length; dbar=mean(d); sd=sampleSd(d);
+    }
+    if(pm==='pairs'){
+      const lines = readText('p_text').split(/\n+/).map(s=>s.trim()).filter(Boolean);
+      let d=[];
+      for(const line of lines){
+        const parts=line.split(/[\s,]+/).filter(Boolean).map(Number);
+        if(parts.length>=2 && isFinite(parts[0]) && isFinite(parts[1])) d.push(parts[0]-parts[1]);
+      }
+      if(d.length<2) return "Error: Paired lists mode needs at least 2 valid pairs.";
+      n=d.length; dbar=mean(d); sd=sampleSd(d);
+    }
+
+    const df=n-1;
+    const se=sd/Math.sqrt(n);
+    const crit=tCrit(alpha,df,true);
+    const lo=dbar-crit*se, hi=dbar+crit*se;
+
+    o.push(`Mode: Confidence Interval`);
+    o.push(`Procedure: Matched Pairs (μd)`);
+    o.push(`Confidence level: ${fmt(CL,6)}   (α=${fmt(alpha,6)})`);
+    o.push(`Distribution used: t (df=${df})`);
+    o.push(`SE formula: SE = s_d/√n`);
+    o.push(`SE = ${fmt(se)}`);
+    o.push(`Critical value: t* = ${fmt(crit)}`);
+    o.push(`CI for μd: [ ${fmt(lo)} , ${fmt(hi)} ]`);
+    return o.join("\n");
+  }
+
+  if(type==='prop1'){
+    const x=readNum('pr1_x'), n=readNum('pr1_n');
+    if(!(n>0) || x<0 || x>n) return "Error: Check that 0 ≤ x ≤ n and n > 0.";
+    const ph=x/n;
+    const se=Math.sqrt(ph*(1-ph)/n);
+    const crit=zCrit(alpha,true);
+    const lo=ph-crit*se, hi=ph+crit*se;
+
+    o.push(`Mode: Confidence Interval`);
+    o.push(`Procedure: One Proportion`);
+    o.push(`Confidence level: ${fmt(CL,6)}   (α=${fmt(alpha,6)})`);
+    o.push(`Distribution used: Normal (z)`);
+    o.push(`p̂ = ${fmt(ph)}`);
+    o.push(`SE formula: SE = √( p̂(1−p̂)/n )`);
+    o.push(`SE = ${fmt(se)}`);
+    o.push(`Critical value: z* = ${fmt(crit)}`);
+    o.push(`CI for p: [ ${fmt(lo)} , ${fmt(hi)} ]`);
+    return o.join("\n");
+  }
+
+  if(type==='prop2'){
+    const x1=readNum('pr2_x1'), n1=readNum('pr2_n1');
+    const x2=readNum('pr2_x2'), n2=readNum('pr2_n2');
+    if(!(n1>0&&n2>0) || x1<0||x2<0 || x1>n1||x2>n2) return "Error: Check inputs (0 ≤ x ≤ n).";
+    const p1=x1/n1, p2=x2/n2;
+    const diff=p1-p2;
+    const se=Math.sqrt(p1*(1-p1)/n1 + p2*(1-p2)/n2);
+    const crit=zCrit(alpha,true);
+    const lo=diff-crit*se, hi=diff+crit*se;
+
+    o.push(`Mode: Confidence Interval`);
+    o.push(`Procedure: Two Proportions`);
+    o.push(`Confidence level: ${fmt(CL,6)}   (α=${fmt(alpha,6)})`);
+    o.push(`Distribution used: Normal (z)`);
+    o.push(`p̂₁=${fmt(p1)}   p̂₂=${fmt(p2)}`);
+    o.push(`SE formula: SE = √( p̂₁(1−p̂₁)/n₁ + p̂₂(1−p̂₂)/n₂ )`);
+    o.push(`SE = ${fmt(se)}`);
+    o.push(`Critical value: z* = ${fmt(crit)}`);
+    o.push(`CI for (p₁−p₂): [ ${fmt(lo)} , ${fmt(hi)} ]`);
+    return o.join("\n");
+  }
+
+  return "Ready.";
+}
+
+function runHT(type, alpha, alt){
+  let o=[];
+  if(type==='mean1'){
+    const method=readText('m1_method');
+    const sigmaKnown=(readText('m1_sigmaKnown')==='yes');
+    let n=readNum('m1_n'), xbar=readNum('m1_xbar'), s=readNum('m1_s');
+    const mu0=readNum('m1_mu0');
+
+    if(method==='raw'){
+      const a=parseDataList(readText('m1_raw'));
+      if(a.length<2) return "Error: Raw data needs at least 2 values.";
+      n=a.length; xbar=mean(a);
+      if(!sigmaKnown) s=sampleSd(a);
+    }
+    const se=s/Math.sqrt(n);
+    const stat=(xbar-mu0)/se;
+
+    const dist=sigmaKnown ? "Normal (z)" : `t (df=${n-1})`;
+    const p = sigmaKnown ? pvalZ(stat,alt) : pvalT(stat,n-1,alt);
+    const crit = sigmaKnown
+      ? zCrit(alpha, alt==='two')
+      : tCrit(alpha, n-1, alt==='two');
+
+    const reject = (alt==='two') ? (Math.abs(stat)>crit) : (alt==='lt' ? (stat<-crit) : (stat>crit));
+
+    o.push(`Mode: Hypothesis Test`);
+    o.push(`Procedure: One Mean`);
+    o.push(`α = ${fmt(alpha,6)}   Alternative: ${alt==='two'?'≠':(alt==='lt'?'<':'>')}`);
+    o.push(`Distribution used: ${dist}`);
+    o.push(`SE formula: ${sigmaKnown ? "SE = σ/√n" : "SE = s/√n"}`);
+    o.push(`SE = ${fmt(se)}`);
+    o.push(`Test statistic: ${sigmaKnown?'z':'t'} = ${fmt(stat)}`);
+    o.push(`Critical value: ${sigmaKnown?'z*':'t*'} = ${alt==='two' ? '±' : ''}${fmt(crit)}`);
+    o.push(`p-value = ${fmt(p,10)}`);
+    o.push(`Decision: ${reject ? "Reject H₀" : "Fail to reject H₀"}`);
+    return o.join("\n");
+  }
+
+  if(type==='mean2'){
+    const method=readText('m2_method');
+    const sigmaKnown=(readText('m2_sigmaKnown')==='yes');
+    let n1=readNum('m2_n1'), n2=readNum('m2_n2');
+    let x1=readNum('m2_x1'), x2=readNum('m2_x2');
+    let s1=readNum('m2_s1'), s2=readNum('m2_s2');
+    const d0=readNum('m2_d0');
+
+    if(method==='raw'){
+      const a1=parseDataList(readText('m2_raw1'));
+      const a2=parseDataList(readText('m2_raw2'));
+      if(a1.length<2 || a2.length<2) return "Error: Each raw sample needs at least 2 values.";
+      n1=a1.length; n2=a2.length; x1=mean(a1); x2=mean(a2);
+      if(!sigmaKnown){ s1=sampleSd(a1); s2=sampleSd(a2); }
+    }
+
+    const se=Math.sqrt((s1*s1)/n1 + (s2*s2)/n2);
+    const stat=((x1-x2)-d0)/se;
+
+    let dist="Normal (z)", p=pvalZ(stat,alt), crit=zCrit(alpha, alt==='two'), df=null;
+    if(!sigmaKnown){
+      const a=(s1*s1)/n1, b=(s2*s2)/n2;
+      df = (a+b)*(a+b) / ( (a*a)/(n1-1) + (b*b)/(n2-1) );
+      dist=`Welch t (df≈${fmt(df,4)})`;
+      p=pvalT(stat,df,alt);
+      crit=tCrit(alpha,df, alt==='two');
+    }
+
+    const reject = (alt==='two') ? (Math.abs(stat)>crit) : (alt==='lt' ? (stat<-crit) : (stat>crit));
+
+    o.push(`Mode: Hypothesis Test`);
+    o.push(`Procedure: Two Means (Independent)`);
+    o.push(`α = ${fmt(alpha,6)}   Alternative: ${alt==='two'?'≠':(alt==='lt'?'<':'>')}`);
+    o.push(`Distribution used: ${dist}`);
+    if(df!==null) o.push(`df ≈ ${fmt(df)}`);
+    o.push(`SE formula: ${sigmaKnown ? "SE = √(σ₁²/n₁ + σ₂²/n₂)" : "SE = √(s₁²/n₁ + s₂²/n₂)  (Welch)"}`);
+    o.push(`SE = ${fmt(se)}`);
+    o.push(`Test statistic: ${sigmaKnown?'z':'t'} = ${fmt(stat)}`);
+    o.push(`Critical value: ${sigmaKnown?'z*':'t*'} = ${alt==='two' ? '±' : ''}${fmt(crit)}`);
+    o.push(`p-value = ${fmt(p,10)}`);
+    o.push(`Decision: ${reject ? "Reject H₀" : "Fail to reject H₀"}`);
+    return o.join("\n");
+  }
+
+  if(type==='paired'){
+    const pm=readText('p_method');
+    let n=readNum('p_n'), dbar=readNum('p_dbar'), sd=readNum('p_sd');
+    const d0=readNum('p_d0');
+
+    if(pm==='diffs'){
+      const d=parseDataList(readText('p_text'));
+      if(d.length<2) return "Error: Differences list needs at least 2 values.";
+      n=d.length; dbar=mean(d); sd=sampleSd(d);
+    }
+    if(pm==='pairs'){
+      const lines = readText('p_text').split(/\n+/).map(s=>s.trim()).filter(Boolean);
+      let d=[];
+      for(const line of lines){
+        const parts=line.split(/[\s,]+/).filter(Boolean).map(Number);
+        if(parts.length>=2 && isFinite(parts[0]) && isFinite(parts[1])) d.push(parts[0]-parts[1]);
+      }
+      if(d.length<2) return "Error: Paired lists mode needs at least 2 valid pairs.";
+      n=d.length; dbar=mean(d); sd=sampleSd(d);
+    }
+
+    const df=n-1;
+    const se=sd/Math.sqrt(n);
+    const stat=(dbar-d0)/se;
+    const p=pvalT(stat,df,alt);
+    const crit=tCrit(alpha,df, alt==='two');
+    const reject = (alt==='two') ? (Math.abs(stat)>crit) : (alt==='lt' ? (stat<-crit) : (stat>crit));
+
+    o.push(`Mode: Hypothesis Test`);
+    o.push(`Procedure: Matched Pairs (μd)`);
+    o.push(`α = ${fmt(alpha,6)}   Alternative: ${alt==='two'?'≠':(alt==='lt'?'<':'>')}`);
+    o.push(`Distribution used: t (df=${df})`);
+    o.push(`SE formula: SE = s_d/√n`);
+    o.push(`SE = ${fmt(se)}`);
+    o.push(`Test statistic: t = ${fmt(stat)}`);
+    o.push(`Critical value: t* = ${alt==='two' ? '±' : ''}${fmt(crit)}`);
+    o.push(`p-value = ${fmt(p,10)}`);
+    o.push(`Decision: ${reject ? "Reject H₀" : "Fail to reject H₀"}`);
+    return o.join("\n");
+  }
+
+  if(type==='prop1'){
+    const x=readNum('pr1_x'), n=readNum('pr1_n');
+    const p0=readNum('pr1_p0');
+    if(!(n>0) || x<0 || x>n || !(p0>0 && p0<1)) return "Error: Check inputs (0 ≤ x ≤ n, 0<p₀<1).";
+    const ph=x/n;
+    const se=Math.sqrt(p0*(1-p0)/n);
+    const z=(ph-p0)/se;
+    const p=pvalZ(z,alt);
+    const crit=zCrit(alpha, alt==='two');
+    const reject = (alt==='two') ? (Math.abs(z)>crit) : (alt==='lt' ? (z<-crit) : (z>crit));
+
+    o.push(`Mode: Hypothesis Test`);
+    o.push(`Procedure: One Proportion`);
+    o.push(`α = ${fmt(alpha,6)}   Alternative: ${alt==='two'?'≠':(alt==='lt'?'<':'>')}`);
+    o.push(`Distribution used: Normal (z)`);
+    o.push(`SE formula (test): SE₀ = √( p₀(1−p₀)/n )`);
+    o.push(`SE₀ = ${fmt(se)}`);
+    o.push(`Test statistic: z = ${fmt(z)}`);
+    o.push(`Critical value: z* = ${alt==='two' ? '±' : ''}${fmt(crit)}`);
+    o.push(`p-value = ${fmt(p,10)}`);
+    o.push(`Decision: ${reject ? "Reject H₀" : "Fail to reject H₀"}`);
+    return o.join("\n");
+  }
+
+  if(type==='prop2'){
+    const x1=readNum('pr2_x1'), n1=readNum('pr2_n1');
+    const x2=readNum('pr2_x2'), n2=readNum('pr2_n2');
+    const d0=readNum('pr2_d0');
+    if(!(n1>0&&n2>0) || x1<0||x2<0 || x1>n1||x2>n2) return "Error: Check inputs (0 ≤ x ≤ n).";
+
+    const p1=x1/n1, p2=x2/n2;
+    const pPool=(x1+x2)/(n1+n2);
+    const se=Math.sqrt(pPool*(1-pPool)*(1/n1 + 1/n2));
+    const z=((p1-p2)-d0)/se;
+    const p=pvalZ(z,alt);
+    const crit=zCrit(alpha, alt==='two');
+    const reject = (alt==='two') ? (Math.abs(z)>crit) : (alt==='lt' ? (z<-crit) : (z>crit));
+
+    o.push(`Mode: Hypothesis Test`);
+    o.push(`Procedure: Two Proportions`);
+    o.push(`α = ${fmt(alpha,6)}   Alternative: ${alt==='two'?'≠':(alt==='lt'?'<':'>')}`);
+    o.push(`Distribution used: Normal (z)`);
+    o.push(`Pooled p̂ = (x₁+x₂)/(n₁+n₂) = ${fmt(pPool)}`);
+    o.push(`SE formula (test): SE₀ = √( p̂(1−p̂)(1/n₁ + 1/n₂) )`);
+    o.push(`SE₀ = ${fmt(se)}`);
+    o.push(`Test statistic: z = ${fmt(z)}`);
+    o.push(`Critical value: z* = ${alt==='two' ? '±' : ''}${fmt(crit)}`);
+    o.push(`p-value = ${fmt(p,10)}`);
+    o.push(`Decision: ${reject ? "Reject H₀" : "Fail to reject H₀"}`);
+    return o.join("\n");
+  }
+
+  return "Ready.";
+}
+
+function reset(){
+  modeEl.value='ci';
+  typeEl.value='mean1';
+  confEl.value='0.95';
+  altEl.value='two';
+  renderForm();
+  outEl.textContent="Ready.";
+}
+function loadExample(){
+  const t=typeEl.value, m=modeEl.value;
+  if(t==='mean1'){
+    document.getElementById('m1_method').value='summary';
+    document.getElementById('m1_sigmaKnown').value='no';
+    document.getElementById('m1_n').value='25';
+    document.getElementById('m1_xbar').value='48';
+    document.getElementById('m1_s').value='10';
+    if(m==='ht') document.getElementById('m1_mu0').value='50';
+  }
+  if(t==='mean2'){
+    document.getElementById('m2_method').value='summary';
+    document.getElementById('m2_sigmaKnown').value='no';
+    document.getElementById('m2_n1').value='30';
+    document.getElementById('m2_x1').value='102';
+    document.getElementById('m2_s1').value='12';
+    document.getElementById('m2_n2').value='28';
+    document.getElementById('m2_x2').value='96';
+    document.getElementById('m2_s2').value='15';
+    if(m==='ht') document.getElementById('m2_d0').value='0';
+  }
+  if(t==='paired'){
+    document.getElementById('p_method').value='diffs';
+    document.getElementById('p_text').value='1 3 2 -1 4 6 0 2 5 1 3 2';
+  }
+  if(t==='prop1'){
+    document.getElementById('pr1_x').value='42';
+    document.getElementById('pr1_n').value='100';
+    if(m==='ht') document.getElementById('pr1_p0').value='0.50';
+  }
+  if(t==='prop2'){
+    document.getElementById('pr2_x1').value='55';
+    document.getElementById('pr2_n1').value='120';
+    document.getElementById('pr2_x2').value='41';
+    document.getElementById('pr2_n2').value='110';
+    if(m==='ht') document.getElementById('pr2_d0').value='0';
+  }
+  outEl.textContent="Example loaded. Click Compute.";
+}
+
+modeEl.addEventListener('change', renderForm);
+typeEl.addEventListener('change', renderForm);
+document.getElementById('calcBtn').addEventListener('click', compute);
+document.getElementById('resetBtn').addEventListener('click', reset);
+document.getElementById('exampleBtn').addEventListener('click', loadExample);
+
+renderForm();
+</script>
+</body>
+</html>
