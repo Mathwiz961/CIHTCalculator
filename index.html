@@ -1094,7 +1094,20 @@ function loadExample(){
   outEl.textContent="Example loaded. Click Compute.";
 }
 
-modeEl.addEventListener('change', renderForm);
+modeEl.addEventListener('change', () => {
+  const val = Number(confEl.value);
+
+  if(modeEl.value === 'ht'){
+    // If looks like CL, convert to alpha
+    if(val > 0.5) confEl.value = (1 - val).toFixed(3);
+  } else {
+    // If looks like alpha, convert to CL
+    if(val < 0.5) confEl.value = (1 - val).toFixed(3);
+  }
+
+  renderForm();
+});
+
 typeEl.addEventListener('change', renderForm);
 document.getElementById('calcBtn').addEventListener('click', compute);
 document.getElementById('resetBtn').addEventListener('click', reset);
