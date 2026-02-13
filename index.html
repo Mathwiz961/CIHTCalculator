@@ -880,7 +880,7 @@ function runHT(type, alpha, alt){
     o.push(`SE formula: ${sigmaKnown ? "SE = σ/√n" : "SE = s/√n"}`);
     o.push(`SE = ${fmt(se)}`);
     o.push(`Test statistic: ${sigmaKnown?'z':'t'} = ${fmt(stat)}`);
-    o.push(`Critical value: ${sigmaKnown?'z*':'t*'} = ${alt==='two' ? '±' : ''}${fmt(crit)}`);
+    o.push(`Critical value: ${sigmaKnown?'z*':'t*'} = ${alt==='two' ? '±' : alt==='lt' ? '-' : ''}${fmt(crit)}`);
     o.push(`p-value = ${fmt(p,10)}`);
     o.push(`Decision: ${reject ? "Reject H₀" : "Fail to reject H₀"}`);
     return o.join("\n");
@@ -924,7 +924,7 @@ function runHT(type, alpha, alt){
     o.push(`SE formula: ${sigmaKnown ? "SE = √(σ₁²/n₁ + σ₂²/n₂)" : "SE = √(s₁²/n₁ + s₂²/n₂)  (Welch)"}`);
     o.push(`SE = ${fmt(se)}`);
     o.push(`Test statistic: ${sigmaKnown?'z':'t'} = ${fmt(stat)}`);
-    o.push(`Critical value: ${sigmaKnown?'z*':'t*'} = ${alt==='two' ? '±' : ''}${fmt(crit)}`);
+    o.push(`Critical value: ${sigmaKnown?'z*':'t*'} = ${alt==='two' ? '±' : alt==='lt' ? '-' : ''}${fmt(crit)}`);
     o.push(`p-value = ${fmt(p,10)}`);
     o.push(`Decision: ${reject ? "Reject H₀" : "Fail to reject H₀"}`);
     return o.join("\n");
@@ -966,7 +966,7 @@ function runHT(type, alpha, alt){
     o.push(`SE formula: SE = s_d/√n`);
     o.push(`SE = ${fmt(se)}`);
     o.push(`Test statistic: t = ${fmt(stat)}`);
-    o.push(`Critical value: t* = ${alt==='two' ? '±' : ''}${fmt(crit)}`);
+    o.push(`Critical value: ${sigmaKnown?'z*':'t*'} = ${alt==='two' ? '±' : alt==='lt' ? '-' : ''}${fmt(crit)}`);
     o.push(`p-value = ${fmt(p,10)}`);
     o.push(`Decision: ${reject ? "Reject H₀" : "Fail to reject H₀"}`);
     return o.join("\n");
@@ -992,7 +992,7 @@ function runHT(type, alpha, alt){
     o.push(`SE formula (test): SE₀ = √( p₀(1−p₀)/n )`);
     o.push(`SE₀ = ${fmt(se)}`);
     o.push(`Test statistic: z = ${fmt(z)}`);
-    o.push(`Critical value: z* = ${alt==='two' ? '±' : ''}${fmt(crit)}`);
+    o.push(`Critical value: z* = ${alt==='two' ? '±' :alt==='lt' ? '-': ''}${fmt(crit)}`);
     o.push(`p-value = ${fmt(p,10)}`);
     o.push(`Decision: ${reject ? "Reject H₀" : "Fail to reject H₀"}`);
     return o.join("\n");
@@ -1021,7 +1021,7 @@ function runHT(type, alpha, alt){
     o.push(`SE formula (test): SE₀ = √( p̂(1−p̂)(1/n₁ + 1/n₂) )`);
     o.push(`SE₀ = ${fmt(se)}`);
     o.push(`Test statistic: z = ${fmt(z)}`);
-    o.push(`Critical value: z* = ${alt==='two' ? '±' : ''}${fmt(crit)}`);
+    o.push(`Critical value: z* = ${alt==='two' ? '±' :alt==='lt' ? '-': ''}${fmt(crit)}`);
     o.push(`p-value = ${fmt(p,10)}`);
     o.push(`Decision: ${reject ? "Reject H₀" : "Fail to reject H₀"}`);
     return o.join("\n");
