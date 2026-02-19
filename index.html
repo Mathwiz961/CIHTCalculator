@@ -39,10 +39,14 @@
       border-bottom:3px solid var(--gold);
       padding:14px 0;
     }
-    .bannerInner{
-      max-width:1200px; margin:0 auto; padding:0 18px;
-      display:flex; align-items:center; justify-content:center; gap:14px;
-    }
+.bannerInner{
+  max-width:1200px; 
+  margin:0 auto; 
+  padding:0 18px;
+  display:flex; 
+  align-items:center; 
+  justify-content:space-between;  /* LEFT + RIGHT */
+}
     .accentPill{
       width:10px; height:34px; border-radius:10px; background:var(--gold);
       box-shadow:0 4px 14px rgba(255,199,44,.35);
@@ -56,7 +60,7 @@
       display:inline-block;
       padding:3px 10px;
       border-radius:999px;
-      background:rgba(255,199,44,.88);
+      background:rgba(255,199,44,1);
       color:#08324f;
       font-size:11px;
       font-weight:800;
@@ -152,16 +156,17 @@
   <div class="pageTitle">Confidence Interval & Hypothesis Test Calculator</div>
 
   <div class="banner">
-    <div class="bannerInner">
-      <div class="accentPill" aria-hidden="true"></div>
-      <div class="bannerText">
-        <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
-          <div class="h">CI / Hypothesis Test Calculator</div>
-          <span class="erauBadge">Embry-Riddle Aeronautical University</span>
-        </div>
-        <div class="sub">Means (z/t) • Two Means (Welch t / z) • Matched Pairs (t) • Proportions (z) • Outputs: critical values, df, SE formulas, p-values</div>
-      </div>
+<div class="bannerInner">
+  <div style="display:flex; align-items:center; gap:12px;">
+    <div class="accentPill" aria-hidden="true"></div>
+    <div class="bannerText">
+      <div class="h">CI / Hypothesis Test Calculator</div>
+      <div class="sub">Means (z/t) • Two Means (Welch t / z) • Matched Pairs (t) • Proportions (z) • Outputs: critical values, df, SE formulas, p-values</div>
     </div>
+  </div>
+
+  <span class="erauBadge">Embry-Riddle Aeronautical University</span>
+</div>
   </div>
 
   <div class="wrap">
